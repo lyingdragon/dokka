@@ -64,3 +64,7 @@ class MarkdownFormatDescriptor : KotlinFormatDescriptorBase() {
 class GFMFormatDescriptor : KotlinFormatDescriptorBase() {
     override val formatServiceClass = GFMFormatService::class
 }
+
+class GitbookFormatDescriptor : KotlinFormatDescriptorBase() {
+    override val formatServiceClass = GitbookFormatService::class
+}

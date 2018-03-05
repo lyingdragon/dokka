@@ -17,7 +17,7 @@ abstract class StructuredOutputBuilder(val to: StringBuilder,
         body()
         to.append(suffix)
     }
-
+    
     protected fun wrapIfNotEmpty(prefix: String, suffix: String, body: () -> Unit, checkEndsWith: Boolean = false) {
         val startLength = to.length
         to.append(prefix)

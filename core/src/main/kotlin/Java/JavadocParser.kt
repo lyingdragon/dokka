@@ -134,8 +134,14 @@ class JavadocParser(private val refGraph: NodeReferenceGraph,
             val linkSignature = resolveLink(valueElement)
             if (linkSignature != null) {
                 val labelText = tag.dataElements.firstOrNull { it is PsiDocToken }?.text ?: valueElement!!.text
-                val link = "<a docref=\"$linkSignature\">${labelText.htmlEscape()}</a>"
-                if (tag.name == "link") "<code>$link</code>" else link
+                //val link = "<a docref=\"$linkSignature\">${labelText.htmlEscape()}</a>"
+                //if (tag.name == "link") "<code>$link</code>" else link
+                //lyingdragon modifed
+                if (tag.name == "link") {
+                  "<a docref=\"$linkSignature\"><code>${labelText.htmlEscape()}</code></a>"
+                } else {
+                  "<a docref=\"$linkSignature\">${labelText.htmlEscape()}</a>"
+                }
             }
             else if (valueElement != null) {
                 valueElement.text
