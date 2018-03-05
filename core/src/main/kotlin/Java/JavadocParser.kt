@@ -122,8 +122,10 @@ class JavadocParser(private val refGraph: NodeReferenceGraph,
         if (linkSignature != null) {
             val linkNode = ContentNodeLazyLink(tag.valueElement!!.text, { -> refGraph.lookupOrWarn(linkSignature, logger)})
             linkNode.append(text)
+            seeSection.append(ContentSoftLineBreak)
             seeSection.append(linkNode)
         } else {
+            seeSection.append(ContentSoftLineBreak)
             seeSection.append(text)
         }
     }

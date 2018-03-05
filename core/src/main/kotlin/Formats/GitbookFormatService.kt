@@ -18,13 +18,8 @@ open class GitbookOutputBuilder(to: StringBuilder,
         body()
     }
 
-    override fun appendLink(href: String, body: () -> Unit) {
-      if (inCodeBlock) {
-          wrap("[", "]($href)", body)
-      }
-      else {
-          wrap("[", "]($href)", body)
-      }
+    override fun appendSoftLineBreak() {
+        to.append("<br/>")
     }
 }
 
