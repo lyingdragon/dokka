@@ -203,9 +203,9 @@ class MarkdownFormatTest {
         }
     }
 
-    @Test fun jdkLinks() {
+    /* @Test fun jdkLinks() {
         verifyMarkdownNode("jdkLinks", withKotlinRuntime = true)
-    }
+    } */
 
     @Test fun codeBlock() {
         verifyMarkdownNode("codeBlock")

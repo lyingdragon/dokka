@@ -118,14 +118,21 @@ class JavadocParser(private val refGraph: NodeReferenceGraph,
         }
         val seeSection = findSectionByTag(ContentTags.SeeAlso) ?: addSection(ContentTags.SeeAlso, null)
         val linkSignature = resolveLink(linkElement)
-        val text = ContentText(linkElement.text)
+        //lyingdragon modifed
+        var linkText = linkElement.text
+        if( linkText.indexOf("#") == 0 ) {
+          linkText = linkText.removePrefix("#")
+        } else {
+          linkText = linkText.replace("#", ".")
+        }
+        val text = ContentText(linkText)
         if (linkSignature != null) {
             val linkNode = ContentNodeLazyLink(tag.valueElement!!.text, { -> refGraph.lookupOrWarn(linkSignature, logger)})
             linkNode.append(text)
-            seeSection.append(ContentSoftLineBreak)
+            seeSection.append(ContentHardLineBreak)
             seeSection.append(linkNode)
         } else {
-            seeSection.append(ContentSoftLineBreak)
+            seeSection.append(ContentHardLineBreak)
             seeSection.append(text)
         }
     }
@@ -135,10 +142,15 @@ class JavadocParser(private val refGraph: NodeReferenceGraph,
             val valueElement = tag.linkElement()
             val linkSignature = resolveLink(valueElement)
             if (linkSignature != null) {
-                val labelText = tag.dataElements.firstOrNull { it is PsiDocToken }?.text ?: valueElement!!.text
+                var labelText = tag.dataElements.firstOrNull { it is PsiDocToken }?.text ?: valueElement!!.text
                 //val link = "<a docref=\"$linkSignature\">${labelText.htmlEscape()}</a>"
                 //if (tag.name == "link") "<code>$link</code>" else link
                 //lyingdragon modifed
+                if( labelText.indexOf("#") == 0 ) {
+                  labelText = labelText.removePrefix("#")
+                } else {
+                  labelText = labelText.replace("#", ".")
+                }
                 if (tag.name == "link") {
                   "<a docref=\"$linkSignature\"><code>${labelText.htmlEscape()}</code></a>"
                 } else {
@@ -146,7 +158,14 @@ class JavadocParser(private val refGraph: NodeReferenceGraph,
                 }
             }
             else if (valueElement != null) {
-                valueElement.text
+              //lyingdragon modifed
+              var labelText = valueElement.text
+              if( labelText.indexOf("#") == 0 ) {
+                labelText = labelText.removePrefix("#")
+              } else {
+                labelText = labelText.replace("#", ".")
+              }
+              labelText
             } else {
                 ""
             }

@@ -70,11 +70,11 @@ class HtmlFormatTest {
         verifyHtmlNode("parameterAnchor")
     }
 
-    @Test fun javaSupertypeLink() {
+    /* @Test fun javaSupertypeLink() {
         verifyJavaHtmlNodes("JavaSupertype") { model ->
             model.members.single().members.single { it.name == "JavaSupertype" }.members.filter { it.name == "Bar" }
         }
-    }
+    } */
 
     @Test fun codeBlock() {
         verifyHtmlNode("codeBlock")
@@ -174,4 +174,3 @@ class HtmlFormatTest {
         }
     }
 }
-
