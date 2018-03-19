@@ -65,6 +65,17 @@ class GFMFormatDescriptor : KotlinFormatDescriptorBase() {
     override val formatServiceClass = GFMFormatService::class
 }
 
-class GitbookFormatDescriptor : KotlinFormatDescriptorBase() {
+//lyingdragon
+//class GitbookFormatDescriptor : KotlinFormatDescriptorBase() {
+  class GitbookFormatDescriptor : FormatDescriptor {
     override val formatServiceClass = GitbookFormatService::class
+    override val outlineServiceClass: KClass<out OutlineFormatService>? = null
+    override val generatorServiceClass = FileGenerator::class
+    override val packageDocumentationBuilderClass = KotlinAsJavaDocumentationBuilder::class
+
+    override val javaDocumentationBuilderClass = JavaPsiDocumentationBuilder::class
+    override val packageListServiceClass: KClass<out PackageListService>? = DefaultPackageListService::class
+    override val sampleProcessingService: KClass<out SampleProcessingService> = DefaultSampleProcessingService::class
+
+    override val descriptorSignatureProvider = KotlinAsJavaDescriptorSignatureProvider::class
 }

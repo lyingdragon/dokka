@@ -48,7 +48,12 @@ object StringListType : TypeLiteral<@JvmSuppressWildcards List<String>>()
 class DokkaOutputModule(val options: DocumentationOptions,
                         val logger: DokkaLogger) : Module {
     override fun configure(binder: Binder) {
-        binder.bind(LanguageService::class.java).to(KotlinLanguageService::class.java)
+      //lyingdragon
+        if (options.outputFormat == "gitbook") {
+          binder.bind(LanguageService::class.java).to(JavaLanguageService::class.java)
+        } else {
+          binder.bind(LanguageService::class.java).to(KotlinLanguageService::class.java)
+        }
 
         binder.bind(HtmlTemplateService::class.java).toProvider(object : Provider<HtmlTemplateService> {
             override fun get(): HtmlTemplateService = HtmlTemplateService.default("style.css")

@@ -64,7 +64,6 @@ class DokkaArguments {
 
 }
 
-
 object MainKt {
 
     fun parseLinks(links: String): List<ExternalDocumentationLink> {
@@ -119,7 +118,6 @@ object MainKt {
                 languageVersion = arguments.languageVersion,
                 apiVersion = arguments.apiVersion
         )
-
         val generator = DokkaGenerator(
                 DokkaConsoleLogger,
                 classPath,
@@ -171,12 +169,10 @@ object MainKt {
         val arguments = DokkaArguments()
         Args.parse(arguments, args)
 
-        if (arguments.outputFormat == "javadoc")
+        // lyingdragon: make markdown output as a javadoc with 'gitbook'
+        if (arguments.outputFormat == "javadoc" || arguments.outputFormat == "gitbook" )
             startWithToolsJar(args)
         else
             entry(args)
     }
 }
-
-
-
