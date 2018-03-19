@@ -1,3 +1,4 @@
+//lyingdragon
 package org.jetbrains.dokka
 
 import com.google.inject.Inject
@@ -18,7 +19,7 @@ open class GitbookOutputBuilder(to: StringBuilder,
         body()
     }
 
-    override fun appendSoftLineBreak() {
+    override fun appendHardLineBreak() {
         to.append("<br/>")
     }
 }

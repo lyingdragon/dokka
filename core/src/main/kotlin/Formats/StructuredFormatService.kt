@@ -116,6 +116,11 @@ abstract class StructuredOutputBuilder(val to: StringBuilder,
     open fun appendSoftLineBreak() {
     }
 
+    //lyingdragon
+    open fun appendHardLineBreak() {
+
+    }
+
     open fun appendIndentedSoftLineBreak() {
     }
 
