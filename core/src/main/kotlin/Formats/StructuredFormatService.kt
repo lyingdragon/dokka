@@ -17,7 +17,7 @@ abstract class StructuredOutputBuilder(val to: StringBuilder,
         body()
         to.append(suffix)
     }
-    
+
     protected fun wrapIfNotEmpty(prefix: String, suffix: String, body: () -> Unit, checkEndsWith: Boolean = false) {
         val startLength = to.length
         to.append(prefix)
@@ -186,6 +186,55 @@ abstract class StructuredOutputBuilder(val to: StringBuilder,
             is ContentBlock -> appendContent(content.children)
         }
     }
+
+        //lyingdragon
+        fun appendSummary(content: ContentNode): Boolean {
+          println("dragon: summary = " + content )
+           /* if(content is ContentParagraph) {
+              if (!content.isEmpty()) {
+                  appendParagraph { appendSummary(content.children) }
+              }
+          } else if( content is ContentText ) {
+                var alltext = content.text.split(".")
+                if( alltext != null) {
+                  appendText(alltext.first())
+                }
+          } else {
+            appendContent(content) */
+          if (content is ContentText && content.text.contains('.')) {
+            println ("dragon: ContentText-- " + content.text)
+
+              var alltext = content.text.split(".")
+              if( alltext != null) {
+                appendText(alltext.first() + ".")
+              }
+              println ("dragon: breakdown")
+              return true
+          } else if( content is ContentParagraph) {
+              if (!content.isEmpty()) {
+                appendParagraph { appendSummary(content.children) }
+              }
+          } else {
+              appendContent(content)
+          }
+          return false
+        }
+
+        fun appendSummary(content: List<ContentNode>) {
+            var count: Int = 0
+            /* if (contentNode is ContentParagraph) {
+              if (!content.isEmpty()) {
+                  for( contentNode in content.children ){
+                    if ( appendSummary(contentNode) )
+                      break;
+                  }
+                } */
+            loop@ for (contentNode in content) {
+                println("dragon: (" + count++ + ") contentNode = " + contentNode )
+                if( appendSummary(contentNode) ) break@loop
+            }
+        }
+        //end
 
     private fun appendLinkIfNotThisPage(href: String, content: ContentBlock) {
         if (href == ".") {
@@ -598,7 +647,10 @@ abstract class StructuredOutputBuilder(val to: StringBuilder,
                                 val breakdownBySummary = members.groupBy { it.summary }
                                 for ((summary, items) in breakdownBySummary) {
                                     appendSummarySignatures(items)
-                                    appendContent(summary)
+                                    //appendContent(summary)
+                                    //lyingdragon
+                                    //println("dragon: " + summary.content)
+                                    appendSummary(summary)
                                 }
                             }
                         }
