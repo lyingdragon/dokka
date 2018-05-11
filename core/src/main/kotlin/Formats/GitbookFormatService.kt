@@ -22,6 +22,10 @@ open class GitbookOutputBuilder(to: StringBuilder,
     override fun appendHardLineBreak() {
         to.append("<br/>")
     }
+
+    override fun appendAnchor(anchor: String) {
+        to.append(" {#" + anchor + "}")
+    }
 }
 
 open class GitbookFormatService(locationService: LocationService,

@@ -258,6 +258,15 @@ abstract class StructuredOutputBuilder(val to: StringBuilder,
         if (from.owner?.kind == NodeKind.GroupNode)
             return link(from.owner!!, to, extension, name)
 
+        //lyingdragon
+        val members = to.references(RefKind.Member).singleOrNull()?.to
+        if (members == null) {
+            val signature = to.detailOrNull(NodeKind.Signature)
+            val fromLocation = locationService.location(from)
+            //println("dragon: signature name = " + to.detailOrNull(NodeKind.Signature)?.name + ", to.name = " + to.name)
+            return FormatLink(name(to), fromLocation.relativePathTo(locationService.location(to), signature?.name ?: to.name))
+        }
+        //end
         return FormatLink(name(to), locationService.relativePathToLocation(from, to))
     }
 
@@ -267,6 +276,14 @@ abstract class StructuredOutputBuilder(val to: StringBuilder,
             val signature = to.detailOrNull(NodeKind.Signature)
             return from.relativePathTo(locationService.location(topLevelPage), signature?.name ?: to.name)
         }
+        // lyingdragon
+        val members = to.references(RefKind.Member).singleOrNull()?.to
+        if (members == null) {
+            val signature = to.detailOrNull(NodeKind.Signature)
+            println("dragon: signature name = " + to.detailOrNull(NodeKind.Signature)?.name + ", to.name = " + to.name)
+            return from.relativePathTo(locationService.location(to), signature?.name ?: to.name)
+        }
+        // end
         return from.relativePathTo(locationService.location(to))
     }
 
@@ -322,7 +339,15 @@ abstract class StructuredOutputBuilder(val to: StringBuilder,
 
             for ((path, nodes) in breakdownByLocation) {
                 if (!noHeader && path.isNotEmpty()) {
+                  //lyingdragon - print breadcrumb only for the class and the first member
+                  if( nodes.first()?.kind in NodeKind.classLike ){
                     appendBreadcrumbs(path)
+                  }
+                  /* val owner = nodes.first()?.owner
+                  if( owner?.members.first()?.qualifiedName() == nodes.first()?.qualifiedName() ) {
+                    appendBreadcrumbs(owner?.path)
+                  } */
+                  //lyingdragon end
                     appendLine()
                     appendLine()
                 }
@@ -343,7 +368,12 @@ abstract class StructuredOutputBuilder(val to: StringBuilder,
                 val breakdownByName = nodes.groupBy { node -> node.name }
                 for ((name, items) in breakdownByName) {
                     if (!noHeader)
-                        appendHeader { appendText(name) }
+                      //lyingdragon add anchor
+                        appendHeader {
+                          appendText(name)
+                          println("dragon: anchor=" + name)
+                          appendAnchor(items.first()?.detailOrNull(NodeKind.Signature)?.name ?: name)
+                        }
                     appendDocumentation(items, singleNode != null)
                 }
             }
@@ -711,7 +741,9 @@ abstract class StructuredOutputBuilder(val to: StringBuilder,
                                 }
                             }
                             appendTableCell {
-                                appendContent(type.summary)
+                                //lyingdragon
+                                //appendContent(type.summary)
+                                appendSummary(type.summary)
                             }
                         }
                     }

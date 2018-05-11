@@ -66,10 +66,15 @@ class DokkaOutputModule(val options: DocumentationOptions,
         binder.bindNameAnnotated<LocationService, FoldersLocationService>("folders")
         binder.bindNameAnnotated<FileLocationService, FoldersLocationService>("folders")
 
-        // defaults
-        binder.bind(LocationService::class.java).to(FoldersLocationService::class.java)
-        binder.bind(FileLocationService::class.java).to(FoldersLocationService::class.java)
-
+        //lyingdragon
+        if (options.outputFormat == "gitbook") {
+          binder.bind(LocationService::class.java).to(ClassFoldersLocationService::class.java)
+          binder.bind(FileLocationService::class.java).to(ClassFoldersLocationService::class.java)
+        } else {
+          // defaults
+          binder.bind(LocationService::class.java).to(FoldersLocationService::class.java)
+          binder.bind(FileLocationService::class.java).to(FoldersLocationService::class.java)
+        }
         binder.registerCategory<OutlineFormatService>("outline")
         binder.registerCategory<FormatService>("format")
         binder.registerCategory<Generator>("generator")

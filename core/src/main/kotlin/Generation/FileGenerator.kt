@@ -19,10 +19,13 @@ class FileGenerator @Inject constructor(val locationService: FileLocationService
         for ((location, items) in nodes.groupBy { specificLocationService.location(it) }) {
             val file = location.file
             file.parentFile?.mkdirsOrFail()
+            println("dragon: file =" + file)
             try {
                 FileOutputStream(file).use {
                     OutputStreamWriter(it, Charsets.UTF_8).use {
                         it.write(formatService.format(location, items))
+                        //it.append(formatService.format(location, items))
+                        //println("dragon: " + formatService.format(location, items))
                     }
                 }
             } catch (e: Throwable) {
@@ -36,10 +39,13 @@ class FileGenerator @Inject constructor(val locationService: FileLocationService
         val outlineService = this.outlineService ?: return
         for ((location, items) in nodes.groupBy { locationService.location(it) }) {
             val file = outlineService.getOutlineFileName(location)
+            //lyingdragon
+            println("dragon: buildoutlines, target file =" + file)
             file.parentFile?.mkdirsOrFail()
             FileOutputStream(file).use {
                 OutputStreamWriter(it, Charsets.UTF_8).use {
                     it.write(outlineService.formatOutline(location, items))
+                    //it.append(outlineService.formatOutline(location, items))
                 }
             }
         }
