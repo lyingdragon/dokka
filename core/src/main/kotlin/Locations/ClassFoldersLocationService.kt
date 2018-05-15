@@ -40,7 +40,7 @@ class ClassFoldersLocationService @Inject constructor(@Named("outputDir") val ro
             // leaf node, use file in owner's folder
             parts = parts.dropLast(1)
             //parts.joinToString("/")
-            parts.joinToString("/") + (if (parts.none()) "" else "/") + "memebers"
+            parts.joinToString("/") + (if (parts.none()) "" else "/") + "members"
         } else {
             parts.joinToString("/") + (if (parts.none()) "" else "/") + "index"
         }
